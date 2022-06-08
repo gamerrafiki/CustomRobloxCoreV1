@@ -1,0 +1,32 @@
+local CoreGui = game:GetService('CoreGui');
+local GuiService = game:GetService('GuiService');
+local RobloxGui = CoreGui:WaitForChild('RobloxGui');
+assert(RobloxGui:FindFirstChild('SettingsShield'),"Error...");
+assert(RobloxGui:FindFirstChild('SettingsShield'):FindFirstChild('SettingsShield'),"Error...");
+local SettingsShield = RobloxGui:WaitForChild('SettingsShield'):WaitForChild('SettingsShield');
+function CreateDevelopButton(Frame)
+	local ButtonUtility = Frame:FindFirstChild("LeaveGameButtonButton"):Clone();
+	ButtonUtility.Name = "DevelopGameButtonButton";
+	ButtonUtility.Image = "rbxasset://textures/ui/Settings/MenuBarAssets/MenuButton.png";
+	ButtonUtility.Parent = Frame;
+	ButtonUtility.Position = UDim2.new(0.5,-130,0.5,-100);
+	ButtonUtility.LeaveGameHint.Image = "rbxasset://textures/ui/icon_admin-16.png";
+	ButtonUtility.LeaveGameHint.Name = "DevelopHint";
+	ButtonUtility.LeaveGameButtonTextLabel.Text = "Customize";
+	ButtonUtility.LeaveGameButtonTextLabel.Name = "DevelopButtonTextLabel";
+	ButtonUtility.Enabled.Value = true;
+	ButtonUtility.MouseEnter:Connect(function()
+		ButtonUtility.Image = "rbxasset://textures/ui/Settings/MenuBarAssets/MenuButtonSelected.png";
+	end);
+	ButtonUtility.MouseEnter:Connect(function()
+		ButtonUtility.Image = "rbxasset://textures/ui/Settings/MenuBarAssets/MenuButton.png";
+	end);
+	ButtonUtility.MouseButton1Click:Connect(function()
+		GuiService.SelectedCoreObject = ButtonUtility;
+		warn(GuiService.SelectedCoreObject);
+		print('This is a test! make sure to see the updated links:D !!!');
+	end);
+end;
+pcall(function()
+	CreateDevelopButton(RobloxGui.SettingsShield.SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame.Players.ButtonsContainer);
+end);
