@@ -1,16 +1,25 @@
 local MenuGui = {}
 
+local rec = false
 local CoreGui = game:GetService('CoreGui')
 local RobloxGui = CoreGui:WaitForChild('RobloxGui'):WaitForChild('SettingsShield'):WaitForChild('SettingsShield'):WaitForChild('MenuContainer')
 local EscapeOpened = Instance.new('BindableEvent')
 local EscapeClosed = Instance.new('BindableEvent')
 local ResetOpened = Instance.new('BindableEvent')
 local ResetClosed = Instance.new('BindableEvent')
+local Recording = Instance.new('BindableEvent')
+local TabOpened = Instance.new('BindableEvent')
+local TabClosed = Instance.new('BindableEvent')
 
+-- Escape Gui --
 MenuGui.MenuOpened = EscapeOpened.Event
 MenuGui.MenuClosed = EscapeClosed.Event
+-- Reset Gui --
 MenuGui.ResetOpened = ResetOpened.Event
 MenuGui.ResetClosed = ResetClosed.Event
+-- Tabs --
+MenuGui.TabOpened = TabOpened.Event
+MenuGui.TabClosed = TabClosed.Event
 
 RobloxGui.PageViewClipper.PageView.PageViewInnerFrame.ChildAdded:Connect(function(frame)
 	if frame.Name == "LeaveGamePage" then
@@ -55,6 +64,41 @@ Setup("ResetCharacter",function(bool)
 		ResetOpened:Fire()
 	else
 		ResetClosed:Fire()
+	end
+end)
+Setup("Players",function(bool)
+	if bool == true then
+		TabOpened:Fire("Players")
+	else
+		TabClosed:Fire("Players")
+	end
+end)
+Setup("Page",function(bool)
+	if bool == true then
+		TabOpened:Fire("Settings")
+	else
+		TabClosed:Fire("Settings")
+	end
+end)
+Setup("ReportAbusePage",function(bool)
+	if bool == true then
+		TabOpened:Fire("Report")
+	else
+		TabClosed:Fire("Report")
+	end
+end)
+Setup("Help",function(bool)
+	if bool == true then
+		TabOpened:Fire("Help")
+	else
+		TabClosed:Fire("Help")
+	end
+end)
+Setup("Record",function(bool)
+	if bool == true then
+		TabOpened:Fire("Recording")
+	else
+		TabClosed:Fire("Recording")
 	end
 end)
 
