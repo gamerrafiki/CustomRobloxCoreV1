@@ -1,0 +1,61 @@
+local MenuGui = {}
+
+local CoreGui = game:GetService('CoreGui')
+local RobloxGui = CoreGui:WaitForChild('RobloxGui'):WaitForChild('SettingsShield'):WaitForChild('SettingsShield'):WaitForChild('MenuContainer')
+local EscapeOpened = Instance.new('BindableEvent')
+local EscapeClosed = Instance.new('BindableEvent')
+local ResetOpened = Instance.new('BindableEvent')
+local ResetClosed = Instance.new('BindableEvent')
+
+MenuGui.MenuOpened = EscapeOpened.Event
+MenuGui.MenuClosed = EscapeClosed.Event
+MenuGui.ResetOpened = ResetOpened.Event
+MenuGui.ResetClosed = ResetClosed.Event
+
+RobloxGui.PageViewClipper.PageView.PageViewInnerFrame.ChildAdded:Connect(function(frame)
+	if frame.Name == "LeaveGamePage" then
+		EscapeOpened:Fire()
+		frame:GetPropertyChangedSignal('Visible'):Connect(function()
+			if frame.Visible == true then
+				EscapeOpened:Fire()
+			else
+				EscapeClosed:Fire()
+			end
+		end)
+	elseif frame.Name == "ResetCharacter" then
+		ResetOpened:Fire()
+		frame:GetPropertyChangedSignal('Visible'):Connect(function()
+			if frame.Visible == true then
+				ResetOpened:Fire()
+			else
+				ResetClosed:Fire()
+			end
+		end)
+	end
+end)
+
+function Setup(name,visibleFunc)
+	local frame = nil
+	if RobloxGui.PageViewClipper.PageView.PageViewInnerFrame:FindFirstChild(name) then
+		frame = RobloxGui.PageViewClipper.PageView.PageViewInnerFrame:FindFirstChild(name)
+		frame:GetPropertyChangedSignal('Visible'):Connect(function()
+			visibleFunc(frame.Visible)
+		end)
+	end
+end
+Setup("LeaveGamePage",function(bool)
+	if bool == true then
+		EscapeOpened:Fire()
+	else
+		EscapeClosed:Fire()
+	end
+end)
+Setup("ResetCharacter",function(bool)
+	if bool == true then
+		ResetOpened:Fire()
+	else
+		ResetClosed:Fire()
+	end
+end)
+
+return MenuGui
